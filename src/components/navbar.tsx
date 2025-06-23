@@ -7,7 +7,7 @@ export default function Navbar() {
   const [searchText, setSearchText] = useState('');
 
   return (
-    <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-md">
+    <nav className="flex items-center justify-between px-6 py-4 bg-blue shadow-md">
       
       {/* Logo on left */}
       <div className="text-xl font-bold text-blue">

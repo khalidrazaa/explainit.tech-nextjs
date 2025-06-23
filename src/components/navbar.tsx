@@ -12,7 +12,7 @@ export default function Navbar() {
       {/* Logo on left */}
       <div className="text-xl font-bold text-blue">
         <Link href="/">
-          <h1 className="text-xl font-bold text-black">explainit.tech</h1>
+          <h1 className="text-xl font-bold text-darkblue border">explainit.tech</h1>
         </Link>
       </div>
 

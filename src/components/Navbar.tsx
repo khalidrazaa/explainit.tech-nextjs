@@ -12,15 +12,15 @@ export default function Navbar() {
       {/* Logo on left */}
       <div className="text-xl font-bold text-blue">
         <Link href="/">
-          <h1 className="text-xl font-bold text-darkblue border">explainit.tech</h1>
+          <h1 className="text-xl font-bold text-darkblue">Explainit.tech</h1>
         </Link>
       </div>
 
       {/* Center Nav Buttons */}
-      <div className="space-x-6 text-lg font-medium hidden md:flex">
-        <Link href="/" className="hover:text-black">Home</Link>
-        <Link href="/articles" className="hover:text-blue-600">Articles</Link>
-        <Link href="/about" className="hover:text-blue-600">About Us</Link>
+      <div className="space-x-12 text-sm font-medium hidden md:flex">
+        <Link href="/" className="hover:text-blue">Home</Link>
+        <Link href="/articles" className="hover:text-blue">Articles</Link>
+        <Link href="/about" className="hover:text-blue">About</Link>
       </div>
 
       {/* Search Bar on Right*/}

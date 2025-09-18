@@ -1,14 +1,13 @@
 'use client'
 
 import { useState } from "react";
-import TipTapEditor from "../../../components/TipTapEditor";
+import QuillEditor from "../../../components/Quill-editor";
 
 export default function NewArticlePage() {
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [category, setCategory] = useState("");
   const [subcategory, setSubcategory] = useState("");
-  const [status, setStatus] = useState("draft");
   const [content, setContent] = useState("");
 
   const handleSubmit = async () => {
@@ -28,7 +27,7 @@ export default function NewArticlePage() {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">New Article</h1>
+      <h1 className="text-2xl font-bold mb-4">Article Editor</h1>
 
       <input
         placeholder="Title"
@@ -61,22 +60,13 @@ export default function NewArticlePage() {
         onChange={(e) => setSubcategory(e.target.value)}
       />
 
-      <select
-        className="p-2 border mb-2"
-        value={status}
-        onChange={(e) => setStatus(e.target.value)}
-      >
-        <option value="draft">Draft</option>
-        <option value="published">Published</option>
-      </select>
-
-      <TipTapEditor content={content} onChange={setContent} />
+      <QuillEditor content={content} onChange={setContent} />
 
       <button
         onClick={handleSubmit}
         className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
       >
-        Save Article
+        Save Draft
       </button>
     </div>
   );

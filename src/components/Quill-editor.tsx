@@ -1,34 +1,23 @@
-'use client';
+"use client";
 
-import React from 'react';
-import dynamic from 'next/dynamic';
-import 'react-quill/dist/quill.snow.css';
+import dynamic from "next/dynamic";
+import "react-quill-new/dist/quill.snow.css";
 
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+// Dynamically import react-quill to avoid SSR crash
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
-interface Props {
+interface QuillEditorProps {
   content: string;
-  onChange: (html: string) => void;
+  onChange: (value: string) => void;
 }
 
-export default function QuillEditor({ content, onChange }: Props) {
-  const modules = {
-    toolbar: [
-      [{ header: [1, 2, 3, false] }],
-      ['bold', 'italic', 'underline', 'strike'],
-      [{ list: 'ordered' }, { list: 'bullet' }],
-      ['link', 'image'],
-      ['clean']
-    ]
-  };
-
+export default function QuillEditor({ content, onChange }: QuillEditorProps) {
   return (
     <ReactQuill
       theme="snow"
       value={content}
       onChange={onChange}
-      modules={modules}
-      style={{ minHeight: '300px', maxHeight: '600px' }}
+      placeholder="Write something..."
     />
   );
 }

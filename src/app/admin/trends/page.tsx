@@ -1,52 +1,105 @@
 "use client";
 
 import { useState } from "react";
-import { getKeywords } from "../../../lib/services/keyword";
+import { getKeywords, scrapeTrends } from "../../../lib/services/keyword";
 
 export default function TrendsPage() {
   const [keyword, setKeyword] = useState("");
   const [results, setResults] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
+  // Separate states for each button
+  const [scrapeMsg, setScrapeMsg] = useState<string | null>(null);
+  const [searchMsg, setSearchMsg] = useState<string | null>(null);
+
+  const [geo, setGeo] = useState("IN"); // default selection
+  const [hours, setHours] = useState("168"); // default selection
+  const [sts, setSts] = useState("active");
+
   const handleSearch = async () => {
     if (!keyword.trim()) return;
     setLoading(true);
+    setSearchMsg("Searching...related post/videos/news"); // clear previous message
     try {
       const data = await getKeywords(keyword.trim());
-      console.log("scrapped keywords",data);
+      console.log("scraped keywords", data);
       setResults(data.suggestions);
+      setSearchMsg(`Found ${data.suggestions.length} suggestions`);
     } catch (err) {
       console.error("Error fetching keywords", err);
+      setSearchMsg("Failed to fetch keyword suggestions");
     } finally {
       setLoading(false);
     }
   };
 
+  const handleScrapeTrends = async () => {
+    setScrapeMsg(`Scraping trends for ${geo}, last ${hours} hours...`);
+    try {
+      const res = await scrapeTrends(geo, hours, sts);
+      console.log("Scrape result", res);
+      setScrapeMsg(`Scraped trending keywords for ${res.geo} (last ${res.hours}h)`);
+    } catch (err) {
+      console.error("Error scraping trends", err);
+      setScrapeMsg("Failed to scrape trends");
+    }
+  };
+
   return (
-    <div className="p-6">
-      <h1 className="text-xl font-bold mb-4">Keyword Trends</h1>
-      <div className="flex gap-2 mb-4">
-        <input
-          className="border p-2 rounded"
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          placeholder="Enter keyword"
-        />
-        <button
-          onClick={handleSearch}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          Search
-        </button>
+    <div className="p-2">
+      
+      {/* Top row with two sections */}
+      <div className="flex justify-between gap-6 mb-6">
+        {/* Scrape Trends Section */}
+        <div className="flex flex-col">
+          <h1 className="text-xl font-bold mb-4">Google Trending Keywords</h1>
+          <div className="flex items-center gap-2">
+            <select value={geo} onChange={(e) => setGeo(e.target.value)} className="border px-3 py-2 rounded">
+              <option value="US">United States</option>
+              <option value="IN">India</option>
+            </select>
+            <select value={hours} onChange={(e) => setHours(e.target.value)} className="border px-3 py-2 rounded">
+              <option value="168">Past 7 days</option>
+              <option value="48">Past 2 days</option>
+              <option value="24">Past 24 hours</option>
+              <option value="4">Past 4 hours</option>
+            </select>
+            <button
+              onClick={handleScrapeTrends}
+              className="bg-blue-600 text-white px-4 py-2 rounded"
+            >
+              Scrape (CSV)
+            </button>
+          </div>
+          {/* Scrape status/error */}
+          {scrapeMsg && <p className="mt-2 text-sm text-gray-700">{scrapeMsg}</p>}
+        </div>
+
+        {/* Keyword Search Section */}
+
+        <div className="flex flex-col">
+          <h1 className="text-xl font-bold mb-4">Search SerpApi for related items</h1>
+          <div className="flex items-center gap-2">
+            <input
+              className="border p-2 rounded"
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+              placeholder="Enter keyword"
+            />
+            <button
+              onClick={handleSearch}
+              className="bg-blue-600 text-white px-4 py-2 rounded"
+            >
+              Search
+            </button>
+          </div>
+          {/* Search status/error */}
+          {/* Search results */}
+          {searchMsg && <p className="mt-2 text-sm text-gray-700">{searchMsg}</p>}
+        </div>
       </div>
-      {loading && <p>Loading...</p>}
-      {results.length > 0 && (
-        <ul className="list-disc pl-6">
-          {results.map((s, i) => (
-            <li key={i}>{s}</li>
-          ))}
-        </ul>
-      )}
+
+
     </div>
   );
 }

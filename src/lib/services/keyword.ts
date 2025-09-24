@@ -1,5 +1,5 @@
 import { apiFetch } from "../api";
-import {  KeywordResponse } from "../../types/keywords";
+import {  KeywordResponse, ScrapeTrendsResponse } from "../../types/keywords";
 
 export async function getKeywords(keyword: string): Promise<KeywordResponse> {
   return apiFetch<KeywordResponse>("/admin/trends/keywords", {
@@ -9,14 +9,8 @@ export async function getKeywords(keyword: string): Promise<KeywordResponse> {
 }
 
 
-export async function scrapeTrends(geo: string, hours: string, sts: string):
-  Promise<{ status: string; geo: string; hours: string }> {
-  const res = await fetch(`/admin/trends/scrape?geo=${geo}&hours=${hours}&sts=${sts}`, {
+export async function scrapeTrends(geo: string, hours: string, sts: string): Promise<ScrapeTrendsResponse> {
+  return apiFetch("/admin/trends/scrape?geo=${geo}&hours=${hours}&sts=${sts}", {
     method: "POST",
   });
-
-  if (!res.ok) {
-    throw new Error("Failed to scrape trends");
-  }
-  return res.json();
 }

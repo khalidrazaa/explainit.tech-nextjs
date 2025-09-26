@@ -10,7 +10,7 @@ export async function getKeywords(keyword: string): Promise<KeywordResponse> {
 
 
 export async function scrapeTrends(geo: string, hours: string, sts: string): Promise<ScrapeTrendsResponse> {
-  return apiFetch("/admin/trends/scrape?geo=${geo}&hours=${hours}&sts=${sts}", {
+  return apiFetch(`/admin/trends/scrape?geo=${geo}&hours=${hours}&sts=${sts}`, {
     method: "POST",
   });
 }

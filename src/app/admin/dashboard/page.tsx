@@ -1,39 +1,49 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { logout } from "../../../lib/services/auth";
-import { useState } from "react";
+//import { useState } from "react";
 
 export default function DashboardPage() {
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    try {
-      setLoading(true);
-      await logout();
-      router.push("/login");
-    } catch (err) {
-      console.error("Logout error:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //const [loading, setLoading] = useState(false);
 
   return (
     <div className="p-8">
-      <header className="flex justify-between items-center mb-6">
+      {/* Header */}
+      <header className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-        <button
-          onClick={handleLogout}
-          disabled={loading}
-          className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600 disabled:opacity-50"
-        >
-          {loading ? "Logging out..." : "Logout"}
-        </button>
       </header>
 
-      <p>Welcome! You are logged in.</p>
+      {/* KPI Cards */}
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="p-6 rounded-lg shadow bg-white">
+          <h2 className="text-sm font-medium text-gray-500">Published Articles</h2>
+          <p className="mt-2 text-3xl font-bold text-gray-800">0</p>
+        </div>
+
+        <div className="p-6 rounded-lg shadow bg-white">
+          <h2 className="text-sm font-medium text-gray-500">Drafts</h2>
+          <p className="mt-2 text-3xl font-bold text-gray-800">0</p>
+        </div>
+
+        <div className="p-6 rounded-lg shadow bg-white">
+          <h2 className="text-sm font-medium text-gray-500">Categories</h2>
+          <p className="mt-2 text-3xl font-bold text-gray-800">0</p>
+        </div>
+
+        <div className="p-6 rounded-lg shadow bg-white">
+          <h2 className="text-sm font-medium text-gray-500">Most Read Article</h2>
+          <p className="mt-2 text-xl font-semibold text-gray-800">—</p>
+        </div>
+      </section>
+
+      {/* Placeholder for charts */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="h-64 rounded-lg shadow bg-white flex items-center justify-center text-gray-400">
+          Traffic Chart (placeholder)
+        </div>
+        <div className="h-64 rounded-lg shadow bg-white flex items-center justify-center text-gray-400">
+          Reads by Article (placeholder)
+        </div>
+      </section>
     </div>
   );
 }

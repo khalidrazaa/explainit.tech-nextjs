@@ -1,17 +1,36 @@
-'use client'
+'use client';
 
 import { useState } from "react";
-import TipTapEditor from "../../../components/TipTapEditor";
+import QuillEditor from "../../../components/Quill-editor";
 
-export default function NewArticlePage() {
+interface Article {
+  title: string;
+  slug: string;
+  category: string;
+  subcategory: string;
+  status: "draft" | "published";
+  createdAt: string;
+  content: string;
+}
+
+export default function ArticleEditor() {
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [category, setCategory] = useState("");
   const [subcategory, setSubcategory] = useState("");
-  const [status, setStatus] = useState("draft");
   const [content, setContent] = useState("");
+  const [status, setStatus] = useState("draft"); // default status
+  const [message, setMessage] = useState(""); // For feedback messages
+  const [error, setError] = useState("");
 
   const handleSubmit = async () => {
+    if (!title || !content) {
+      setError("Title and content are required.");
+      setMessage("");
+      return;
+    }
+
+    setError("");
     const article = {
       title,
       slug,
@@ -22,13 +41,28 @@ export default function NewArticlePage() {
       content,
     };
 
-    console.log("Saving article:", article);
-    // In production, send to API route or save as JSON
+    try {
+      // Replace with your API call
+      const res = await fetch("/api/articles/save-draft", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(article),
+      });
+
+      if (!res.ok) throw new Error("Failed to save draft");
+
+      setMessage("Draft saved successfully!");
+      setTimeout(() => setMessage(""), 5000); // hide after 5s
+    } catch (err: unknown) {
+      if (err instanceof Error) setError(err.message);
+      else setError("Failed to save draft");
+      setMessage("");
+    }
   };
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">New Article</h1>
+      <h1 className="text-2xl font-bold mb-4">Article Editor</h1>
 
       <input
         placeholder="Title"
@@ -61,23 +95,28 @@ export default function NewArticlePage() {
         onChange={(e) => setSubcategory(e.target.value)}
       />
 
-      <select
-        className="p-2 border mb-2"
-        value={status}
-        onChange={(e) => setStatus(e.target.value)}
-      >
-        <option value="draft">Draft</option>
-        <option value="published">Published</option>
-      </select>
-
-      <TipTapEditor content={content} onChange={setContent} />
+      <QuillEditor content={content} onChange={setContent} />
 
       <button
         onClick={handleSubmit}
         className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
       >
-        Save Article
+        Save Draft
       </button>
+
+      {/* Feedback messages */}
+      <div className="mt-4">
+        {message && (
+          <div className="rounded bg-green-100 p-2 text-sm text-green-700">
+            {message}
+          </div>
+        )}
+        {error && (
+          <div className="rounded bg-red-100 p-2 text-sm text-red-700">
+            {error}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -38,7 +38,9 @@ export default function TrendsPage() {
     try {
       const res = await scrapeTrends(geo, hours, sts);
       console.log("Scrape result", res);
-      setScrapeMsg(`Scraped trending keywords for ${res.geo} (last ${res.hours}h)`);
+      setScrapeMsg(
+        `Scraped trending keywords for ${res.geo} (last ${res.hours}h, status: ${res.sts})`
+      );
     } catch (err) {
       console.error("Error scraping trends", err);
       setScrapeMsg("Failed to scrape trends");
@@ -47,22 +49,37 @@ export default function TrendsPage() {
 
   return (
     <div className="p-2">
-      
       {/* Top row with two sections */}
       <div className="flex justify-between gap-6 mb-6">
         {/* Scrape Trends Section */}
         <div className="flex flex-col">
           <h1 className="text-xl font-bold mb-4">Google Trending Keywords</h1>
           <div className="flex items-center gap-2">
-            <select value={geo} onChange={(e) => setGeo(e.target.value)} className="border px-3 py-2 rounded">
+            <select
+              value={geo}
+              onChange={(e) => setGeo(e.target.value)}
+              className="border px-3 py-2 rounded"
+            >
               <option value="US">United States</option>
               <option value="IN">India</option>
             </select>
-            <select value={hours} onChange={(e) => setHours(e.target.value)} className="border px-3 py-2 rounded">
+            <select
+              value={hours}
+              onChange={(e) => setHours(e.target.value)}
+              className="border px-3 py-2 rounded"
+            >
               <option value="168">Past 7 days</option>
               <option value="48">Past 2 days</option>
               <option value="24">Past 24 hours</option>
               <option value="4">Past 4 hours</option>
+            </select>
+            <select
+              value={sts}
+              onChange={(e) => setSts(e.target.value)}
+              className="border px-3 py-2 rounded"
+            >
+              <option value="active">Active</option>
+              <option value="archived">Archived</option>
             </select>
             <button
               onClick={handleScrapeTrends}
@@ -72,13 +89,16 @@ export default function TrendsPage() {
             </button>
           </div>
           {/* Scrape status/error */}
-          {scrapeMsg && <p className="mt-2 text-sm text-gray-700">{scrapeMsg}</p>}
+          {scrapeMsg && (
+            <p className="mt-2 text-sm text-gray-700">{scrapeMsg}</p>
+          )}
         </div>
 
         {/* Keyword Search Section */}
-
         <div className="flex flex-col">
-          <h1 className="text-xl font-bold mb-4">Search SerpApi for related items</h1>
+          <h1 className="text-xl font-bold mb-4">
+            Search SerpApi for related items
+          </h1>
           <div className="flex items-center gap-2">
             <input
               className="border p-2 rounded"
@@ -88,18 +108,26 @@ export default function TrendsPage() {
             />
             <button
               onClick={handleSearch}
-              className="bg-blue-600 text-white px-4 py-2 rounded"
+              disabled={loading}
+              className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
             >
-              Search
+              {loading ? "Searching..." : "Search"}
             </button>
           </div>
           {/* Search status/error */}
+          {searchMsg && (
+            <p className="mt-2 text-sm text-gray-700">{searchMsg}</p>
+          )}
           {/* Search results */}
-          {searchMsg && <p className="mt-2 text-sm text-gray-700">{searchMsg}</p>}
+          {results.length > 0 && (
+            <ul className="mt-2 list-disc list-inside text-sm text-gray-800 space-y-1">
+              {results.map((r, idx) => (
+                <li key={idx}>{r}</li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
-
-
     </div>
   );
 }

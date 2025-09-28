@@ -3,14 +3,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
+import { Article } from "../../../types/types";
+
 export default function DraftsPage() {
-  const [articles, setArticles] = useState<unknown[]>([]);
+  const [articles, setArticles] = useState<Article[]>([]);
 
   useEffect(() => {
     // TODO: Fetch drafts from API
     setArticles([
-      { id: 1, title: "Draft 1", slug: "draft-1" },
-      { id: 2, title: "Draft 2", slug: "draft-2" },
+      { id: 1, title: "Draft 1", slug: "draft-1", category: "draft-1", subcategory: "draft-1", status: "draft", createdAt: "draft-1", content: "draft-1" }
     ]);
   }, []);
 

@@ -39,7 +39,7 @@ export default function TrendsPage() {
       const res = await scrapeTrends(geo, hours, sts);
       console.log("Scrape result", res);
       setScrapeMsg(
-        `Scraped trending keywords for ${res.geo} (last ${res.hours}h, status: ${res.sts})`
+        `Scraped trending keywords for ${res.geo} (last ${res.hours}h)`
       );
     } catch (err) {
       console.error("Error scraping trends", err);

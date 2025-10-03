@@ -18,4 +18,11 @@ export interface ScrapeTrendsResponse  {
   status: string;
   geo: string;
   hours: string;
+  result: {
+    processed_rows: number;
+    inserted_count: number;
+    matched_count: number;
+    modified_count: number;
+    categorized_count: number;
+  };
 };

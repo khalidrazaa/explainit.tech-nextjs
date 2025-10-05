@@ -53,7 +53,6 @@ export default function TrendsPage() {
       <div className="flex justify-between gap-6 mb-6">
         {/* Scrape Trends Section */}
         <div className="flex flex-col">
-          <h1 className="text-xl font-bold mb-4">Google Trending Keywords</h1>
           <div className="flex items-center gap-2">
             <select
               value={geo}
@@ -85,7 +84,7 @@ export default function TrendsPage() {
               onClick={handleScrapeTrends}
               className="bg-blue-600 text-white px-4 py-2 rounded"
             >
-              Scrape (CSV)
+              Scrape Trends(CSV)
             </button>
           </div>
           {/* Scrape status/error */}

@@ -14,3 +14,10 @@ export async function scrapeTrends(geo: string, hours: string, sts: string): Pro
     method: "POST",
   });
 }
+
+
+export async function getTrendsData(){
+  return apiFetch(`/admin/trends/list_trends`, {
+    method: "GET",
+  });
+}

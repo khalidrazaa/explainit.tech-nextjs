@@ -9,7 +9,7 @@ export default function ArticleEditor() {
   const [category, setCategory] = useState("");
   const [subcategory, setSubcategory] = useState("");
   const [content, setContent] = useState("");
-  const [status, setStatus] = useState("draft"); // default status
+  //const [status, setStatus] = useState("draft"); // default status
   const [message, setMessage] = useState(""); // For feedback messages
   const [error, setError] = useState("");
 

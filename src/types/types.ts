@@ -26,3 +26,17 @@ export interface ScrapeTrendsResponse  {
     categorized_count: number;
   };
 };
+
+export interface Trend {
+  _id: string;
+  trend: string;
+  category?: string;
+  subcategory?: string;
+  search_volume?: number;
+  is_growing?: boolean;
+  status?: string;
+  started?: string;
+  ended?: string;
+  last_updated?: string;
+  explore_link?: string;
+}

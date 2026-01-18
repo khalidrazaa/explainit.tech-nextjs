@@ -2,21 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { getKeywords, scrapeTrends, getTrendsData } from "../../../lib/services/keyword";
-
-
-interface Trend {
-  _id: string;
-  trend: string;
-  category?: string;
-  subcategory?: string;
-  search_volume?: number;
-  is_growing?: boolean;
-  status?: string;
-  started?: string;
-  ended?: string;
-  last_updated?: string;
-  explore_link?: string;
-}
+import { Trend } from "../../../types/types";
 
 export default function TrendsPage() {
   const [keyword, setKeyword] = useState("");
@@ -71,8 +57,7 @@ export default function TrendsPage() {
 
   const getTrendsList = async () => {
     try {
-      const data = await getTrendsData();
-      console.log("list of saved trends", data);
+      const data = await getTrendsData(); // typed correctly
       setTrendsList(data.result || []);
     } catch (err) {
       console.error("Error fetching trends data", err);
@@ -82,6 +67,7 @@ export default function TrendsPage() {
     }
   };
 
+  
   return (
     <div>
       <div className="p-2">

@@ -1,5 +1,10 @@
 import { apiFetch } from "../api";
-import {  KeywordResponse, ScrapeTrendsResponse } from "../../types/types";
+import {  KeywordResponse, ScrapeTrendsResponse, Trend } from "../../types/types";
+
+
+interface TrendsResponse {
+  result: Trend[];
+}
 
 export async function getKeywords(keyword: string): Promise<KeywordResponse> {
   return apiFetch<KeywordResponse>("/admin/trends/keywords", {
@@ -16,8 +21,8 @@ export async function scrapeTrends(geo: string, hours: string, sts: string): Pro
 }
 
 
-export async function getTrendsData(){
+export async function getTrendsData(): Promise<TrendsResponse> {
   return apiFetch(`/admin/trends/list_trends`, {
     method: "GET",
-  });
+  }) as Promise<TrendsResponse>; // tell TS the shape
 }
